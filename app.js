@@ -36,8 +36,27 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // DB configuration
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database(settings.db);
+//var sqlite3 = require('sqlite3').verbose();
+//var db = new sqlite3.Database(settings.db);
+
+var { Connection, Request } = require("tedious");
+const config = {
+  authentication: {
+    options: {
+      userName: "roboadmin", // update me
+      password: "LILBTMCNETEW6cdd3wjhfd6e2gCDD3WJHFD6E2G4@" // update me
+    },
+    type: "default"
+  },
+  server: "notejam-tst-sql.database.windows.net", // update me
+  options: {
+    database: "notejam-tst-sql-db", //update me
+    encrypt: true
+  }
+};
+
+var connection = new Connection(config);
+connection.connect()
 
 orm.settings.set("instance.returnAllErrors", true);
 app.use(orm.express(settings.dsn, {
